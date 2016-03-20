@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Priape</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_Email">Email</string>
+    <string name="hint_Pass">Mot de passe</string>
+    <string name="login">Connexion</string>
+</resources>
