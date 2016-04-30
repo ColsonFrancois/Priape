@@ -6,4 +6,20 @@
     <string name="hint_Email">Email</string>
     <string name="hint_Pass">Mot de passe</string>
     <string name="login">Connexion</string>
+    <string name="title_activity_activity_search">activity_search</string>
+    <string name="title_activity_search">Search</string>
+    <string name="login_loading">Connexion en cours&#8230;</string>
+    <string name="Signup">Inscrivez-vous</string>
+    <string name="forgotten_password">Mot de passe oublié?</string>
+    <string name="title_activity_register">Register</string>
+    <string name="hint_name">nom</string>
+    <string name="hint_validatePassword">Valider mot de passe</string>
+    <string name="register">Inscription</string>
+    <string name="progress_inscription">Inscription en cours&#8230;</string>
+    <string name="registerSuccess">Un email vous sera envoyé. Vous pouvez vous connecter</string>
+
+    <!-- Backendless Errors-->
+    <string name="error_fields">Veuillez remplir tous les champs.</string>
+    <string name="error_3003">Mauvais identifiants.</string>
+    <string name="error_others">Une erreur est survenue.</string>
 </resources>

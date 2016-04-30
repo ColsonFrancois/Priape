@@ -9,4 +9,8 @@ public abstract class Callback {
         void success();
         void error(String errorCode);
     }
+    public interface RegisterCallback{
+        void success();
+        void error(String errorCode);
+    }
 }

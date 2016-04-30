@@ -6,6 +6,10 @@
     android:background="@color/colorPrimary"
     tools:context=".LoginActivity">
 
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar" />
     <LinearLayout
         android:id="@+id/ignored"
         android:orientation="horizontal"
@@ -13,10 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/toolbar" />
+
 
     <android.support.v7.widget.CardView
         android:id="@+id/LoginCard"
@@ -33,24 +34,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:drawableLeft="@drawable/ic_social_person"
-                android:id="@+id/email"
+                android:drawableLeft="@drawable/ic_communication_email"
+                android:id="@+id/Register_email"
                 android:drawablePadding="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="francois@priape.be"
                 android:hint="@string/hint_Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                 />
-
+                />
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:drawableLeft="@drawable/ic_social_person"
+                android:id="@+id/Register_name"
+                android:drawablePadding="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:hint="@string/hint_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                />
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:drawableLeft="@drawable/ic_action_lock"
-                android:id="@+id/password"
+                android:id="@+id/Register_password"
                 android:drawablePadding="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
@@ -61,44 +74,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-              />
+                />
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:drawableLeft="@drawable/ic_communication_vpn_key"
+                android:id="@+id/Register_repassword"
+                android:drawablePadding="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:hint="@string/hint_validatePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                />
             <Button
-                android:id="@+id/loginButton"
-                android:text="@string/login"
+                android:id="@+id/Register_register"
+                android:text="@string/register"
                 android:layout_margin="16dp"
                 android:textColor="#FFF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <View
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"
-                android:alpha="0.12"
-                android:layout_alignParentBottom="true"/>
-            <TextView
-                android:id="@+id/Login_register"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Signup"
-                android:textColor="@color/colorDarkPrimary"
-                android:layout_gravity="right"
-                />
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/forgotten_password"
-                android:textColor="@color/colorDarkPrimary"
-                android:layout_gravity="right"
-                />
 
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
 </RelativeLayout>
-

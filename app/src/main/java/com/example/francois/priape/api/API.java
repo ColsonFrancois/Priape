@@ -3,7 +3,11 @@ package com.example.francois.priape.api;
 
 import android.util.Log;
 
+import com.example.francois.priape.Model.User;
+import com.example.francois.priape.api.utils.BackendlessCollection;
+import com.example.francois.priape.api.utils.BackendlessError;
 import com.example.francois.priape.api.utils.LoginCredentials;
+import com.example.francois.priape.api.utils.RegisterBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -46,15 +50,6 @@ public class API {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
 
-                        if (chain.request().method().equals("DELETE")) {
-
-                            Request.Builder request = chain.request().newBuilder()
-                                    .addHeader("application-id", Default.APPLICATION_ID)
-                                    .addHeader("secret-key", Default.SECRET_KEY)
-                                    .addHeader("application-type", "REST");
-
-                            return chain.proceed(request.build());
-                        } else {
 
                             Request.Builder request = chain.request().newBuilder()
                                     .addHeader("application-id", Default.APPLICATION_ID)
@@ -63,7 +58,6 @@ public class API {
                                     .addHeader("application-type", "REST");
 
                             return chain.proceed(request.build());
-                        }
                     }
                 }).build();
 
@@ -86,26 +80,26 @@ public class API {
                 .build();
 
         apiService = retrofit.create(APIService.class);
-        Log.i("test", gson.toString());
     }
 
 
     public static void login(String username, String password, final Callback.LoginCallback callback) {
-
         Call<ResponseBody> loginCall = apiService.login(new LoginCredentials(username, password));
-        loginCall.enqueue(new retrofit2.Callback<ResponseBody>() {
+       loginCall.enqueue(new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
                 if (response.isSuccessful()) {
-
-                   /*
-                    treatments = response.body().getTreatments();
-                    Log.i("LogUser",response.toString());
+/*                  Log.i("LogUser",response.toString());
                     Log.i("LogUser",response.raw().message());*/
+
 
                     callback.success();
 
+                }
+                else{
+                    BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                    callback.error(backendlessError.getCode() + "");
                 }
             }
 
@@ -114,6 +108,51 @@ public class API {
                 Log.i("Backendless", "- " + t.getLocalizedMessage());
                 callback.error(t.getLocalizedMessage().toString());
             }
+        });
+    }
+
+    public static void Register(String email, String name, String password, final Callback.RegisterCallback callback)
+    {
+        Call<Void> call = apiService.register(new RegisterBody(email, password, name));
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if(response.isSuccessful()){
+                    callback.success();
+                }else{
+                    BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                   callback.error(backendlessError.getCode() + "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.error(t.getLocalizedMessage());
+            }
+        });
+
+    }
+
+
+
+
+
+    public  static void GetUsers(String name)
+    {
+       String whereClause = "name='" + name + "'";
+        Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
+        call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
+
+            public void onResponse(Call<BackendlessCollection<User>> call, retrofit2.Response<BackendlessCollection<User>> response)
+            {
+
+            }
+
+            @Override
+            public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
+
+            }
+
         });
     }
 
