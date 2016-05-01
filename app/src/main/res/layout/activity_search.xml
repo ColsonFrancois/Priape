@@ -1,28 +1,77 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.francois.priape.Search">
     <LinearLayout
+        android:id="@+id/ignored"
+        android:orientation="horizontal"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"/>
 
-          <include
+        <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/toolbar"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="50dp"
+    <android.support.v7.widget.CardView
+        android:id="@+id/Search_Card"
+        android:layout_margin="16dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp">
 
-                />
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/worksSearch"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:alpha="0.38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/search_jobs"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/works_name"
+                android:spinnerMode="dropdown" />
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/Works"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:alpha="0.38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/search_works"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
             <Button
-                android:id="@+id/search"
+                android:id="@+id/search_search"
+                android:text="@string/search"
+                android:layout_margin="16dp"
+                android:textColor="#FFF"
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
+    </android.support.v7.widget.CardView>
 
-    </LinearLayout>
 
 </RelativeLayout>

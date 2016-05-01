@@ -17,9 +17,22 @@
     <string name="register">Inscription</string>
     <string name="progress_inscription">Inscription en cours&#8230;</string>
     <string name="registerSuccess">Un email vous sera envoyé. Vous pouvez vous connecter</string>
+    <string name="search">Rechercher</string>
+    <string name="worksSearch">Je recherche un : </string>
+    <string name="logout">Déconnexion</string>
+    <string name="Works">Pour réaliser : </string>
 
     <!-- Backendless Errors-->
     <string name="error_fields">Veuillez remplir tous les champs.</string>
     <string name="error_3003">Mauvais identifiants.</string>
     <string name="error_others">Une erreur est survenue.</string>
+
+    <array name="works_name">
+        <item>Maçon</item>
+        <item>Jardinier</item>
+        <item>plafonneur</item>
+        <item>Electricien</item>
+        <item>Menuisier</item>
+        <item>Carreleur</item>
+    </array>
 </resources>

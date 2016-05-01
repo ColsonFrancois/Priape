@@ -13,4 +13,8 @@ public abstract class Callback {
         void success();
         void error(String errorCode);
     }
+    public interface LougoutCallback{
+        void success();
+        void error(String errorCode);
+    }
 }

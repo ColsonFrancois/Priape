@@ -20,7 +20,7 @@
 
 
     <android.support.v7.widget.CardView
-        android:id="@+id/LoginCard"
+        android:id="@+id/RegisterCard"
         android:layout_margin="16dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
