@@ -113,7 +113,6 @@ public class API {
 
                 }
                 else{
-                    Log.i("JSON", new Gson().toJson(response));
                     BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
                     callback.error(backendlessError.getCode() + "");
                 }
@@ -196,9 +195,10 @@ public class API {
     }
 
 
-    public  static void GetUsers(String name)
+    public  static void GetUsers(String job, String work)
     {
-       String whereClause = "name='" + name + "'";
+       String whereClause = "job.name='"+job+"' AND works.name='"+work+"'";
+
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
 
@@ -213,7 +213,7 @@ public class API {
         });
     }
 
-    public static void getJob(String job)
+    public static void getJob(String job, final Callback.JobCallback callback)
     {
         String whereClause = "name='" + job + "'";
         Call<BackendlessCollection<Job>> call = apiService.getJob(0, whereClause);
@@ -221,9 +221,16 @@ public class API {
 
             @Override
             public void onResponse(Call<BackendlessCollection<Job>> call, retrofit2.Response<BackendlessCollection<Job>> response) {
-
+                if (response.isSuccessful()) {
+                    if (response.body().getData().size() != 0)
+                        callback.success(response.body().getData().get(0));
+                    else
+                        callback.error(null);
+                } else {
+                    BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                    callback.error(backendlessError.getCode() + "");
+                }
             }
-
             @Override
             public void onFailure(Call<BackendlessCollection<Job>> call, Throwable t) {
 

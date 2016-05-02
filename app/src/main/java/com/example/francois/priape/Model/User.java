@@ -2,6 +2,8 @@ package com.example.francois.priape.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by Francois on 30/04/2016.
  */
@@ -13,6 +15,7 @@ public class User {
     private String objectId;
     private String email;
     private Job job;
+    private List<Work> works;
     @SerializedName("user-token")
     private String userToken;
 
