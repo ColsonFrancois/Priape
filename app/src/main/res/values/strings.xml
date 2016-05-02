@@ -21,7 +21,8 @@
     <string name="worksSearch">Je recherche un : </string>
     <string name="logout">Déconnexion</string>
     <string name="Works">Pour réaliser : </string>
-
+    <string name="search_loading">Recherche&#8230;</string>
+    <string name="results">Résultats</string>
     <!-- Backendless Errors-->
     <string name="error_fields">Veuillez remplir tous les champs.</string>
     <string name="error_3003">Mauvais identifiants.</string>
@@ -35,4 +36,6 @@
         <item>Menuisier</item>
         <item>Carreleur</item>
     </array>
+    <string name="title_activity_list_professional">ListProfessionalActivity</string>
+    <string name="title_activity_professionals">professionalsActivity</string>
 </resources>

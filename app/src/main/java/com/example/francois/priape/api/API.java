@@ -128,7 +128,7 @@ public class API {
 
     public static void Register(String email, String name, String password, final Callback.RegisterCallback callback)
     {
-        Call<Void> call = apiService.register(new RegisterBody(email, password, name));
+        Call<Void> call = apiService.register(new RegisterBody(email, password, name, false));
         call.enqueue(new retrofit2.Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
@@ -195,16 +195,21 @@ public class API {
     }
 
 
-    public  static void GetUsers(String job, String work)
+    public  static void GetUsers(String job, String work, final Callback.GetListCallback<User> callback)
     {
-       String whereClause = "job.name='"+job+"' AND works.name='"+work+"'";
+       String whereClause = "job.name='"+job+"' AND professional=true AND works.name='"+work+"'";
 
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
 
             public void onResponse(Call<BackendlessCollection<User>> call, retrofit2.Response<BackendlessCollection<User>> response)
             {
-                Log.i("heahders", new Gson().toJson(response.body()));
+               if(response.isSuccessful()){
+                   callback.success(response.body().getData());
+               }else{
+                   BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                   callback.error(backendlessError.getCode()+ "");
+               }
             }
             @Override
             public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {

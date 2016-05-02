@@ -10,9 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.francois.priape.Model.Job;
+import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
@@ -38,7 +40,25 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                API.GetUsers(spinnerJobs.getSelectedItem().toString(), spinnerWorks.getSelectedItem().toString());
+                final MaterialDialog progress = new MaterialDialog.Builder(SearchActivity.this)
+                        .content(R.string.search_loading)
+                        .progress(true, 0)
+                        .show();
+
+                API.GetUsers(spinnerJobs.getSelectedItem().toString(), spinnerWorks.getSelectedItem().toString(), new Callback.GetListCallback<User>() {
+                    @Override
+                    public void success(List<User> results) {
+                        progress.dismiss();
+                        Intent intent = new Intent(getApplicationContext(), professionalsActivity.class);
+                        intent.putParcelableArrayListExtra("listUser", (ArrayList<User>) results);
+                        startActivity(intent);
+                    }
+                    @Override
+                    public void error(String errorCode) {
+                        progress.dismiss();
+                        Toast.makeText(getApplicationContext(), errorCode.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
         spinnerJobs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

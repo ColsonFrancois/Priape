@@ -5,4 +5,5 @@
     <color name="colorDarkPrimary">#388E3C</color>
     <color name="backgroundColor">#E8E8E0</color>
     <color name="background">#E9EAED</color>
+    <color name="colorHard">#1B5E20</color>
 </resources>

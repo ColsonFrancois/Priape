@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -30,6 +31,7 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:drawableLeft="@drawable/ic_social_person"
                 android:id="@+id/email"
+                app:met_floatingLabel="normal"
                 android:drawablePadding="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
@@ -51,6 +53,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:maxLines="1"
+                app:met_floatingLabel="normal"
                 android:singleLine="true"
                 android:hint="@string/hint_Pass"
                 android:layout_width="match_parent"

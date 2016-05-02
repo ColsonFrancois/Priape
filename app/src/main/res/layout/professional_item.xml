@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="User"
+            type="com.example.francois.priape.Model.User"/>
+    </data>
+        <RelativeLayout
+            android:id="@+id/professional_item"
+            android:background="@color/background"
+            android:layout_width="match_parent"
+            android:layout_height="88dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/professional_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:text="@{User.name}"/>
+
+
+
+        </LinearLayout>
+        </RelativeLayout>
+</layout>

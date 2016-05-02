@@ -29,6 +29,10 @@
             android:name=".SearchActivity"
             android:label="@string/title_activity_search" >
         </activity>
+        <activity
+            android:name=".professionalsActivity"
+            android:label="@string/title_activity_professionals" >
+        </activity>
     </application>
 
 </manifest>
