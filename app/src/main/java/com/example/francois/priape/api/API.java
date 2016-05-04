@@ -3,9 +3,9 @@ package com.example.francois.priape.api;
 
 import android.util.Log;
 
+import com.example.francois.priape.Model.GeoPoint;
 import com.example.francois.priape.Model.Job;
 import com.example.francois.priape.Model.User;
-import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.utils.BackendlessCollection;
 import com.example.francois.priape.api.utils.BackendlessError;
 import com.example.francois.priape.api.utils.LoginCredentials;
@@ -93,7 +93,7 @@ public class API {
 
     public static void login(String username, String password, final Callback.LoginCallback callback) {
         Call<User> loginCall = apiService.login(new LoginCredentials(username, password));
-       loginCall.enqueue(new retrofit2.Callback<User>() {
+        loginCall.enqueue(new retrofit2.Callback<User>() {
             @Override
             public void onResponse(Call<User> call, retrofit2.Response<User> response) {
 
@@ -136,7 +136,7 @@ public class API {
                     callback.success();
                 }else{
                     BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
-                   callback.error(backendlessError.getCode() + "");
+                    callback.error(backendlessError.getCode() + "");
                 }
             }
 
@@ -164,7 +164,7 @@ public class API {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                    callback.error(t.getLocalizedMessage());
+                callback.error(t.getLocalizedMessage());
             }
         });
     }
@@ -173,10 +173,8 @@ public class API {
 
     public static void updateUser()
     {
-        Work work = new Work("Tondre pelouse");
-        Job job = new Job("Jardinier", null);
-        job.addWork(work);
-        currentUser.setJob(job);
+        GeoPoint location = new GeoPoint(50.524705, 4.114619);
+        currentUser.setLocation(location);
         Call<User> call = apiService.updateUser(currentUser.getObjectId(), currentUser);
         call.enqueue(new retrofit2.Callback<User>(){
 
@@ -197,19 +195,19 @@ public class API {
 
     public  static void GetUsers(String job, String work, final Callback.GetListCallback<User> callback)
     {
-       String whereClause = "job.name='"+job+"' AND professional=true AND works.name='"+work+"'";
-
+        String whereClause = "distance( 50.484512, 4.254985, location.latitude, location.longitude ) < mi(200)"+" AND job.name='"+job+"' AND professional=true AND works.name='"+work+"'";
+        String sortClause = "distance( 50.484512, 4.254985, location.latitude, location.longitude )";
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
 
             public void onResponse(Call<BackendlessCollection<User>> call, retrofit2.Response<BackendlessCollection<User>> response)
             {
-               if(response.isSuccessful()){
-                   callback.success(response.body().getData());
-               }else{
-                   BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
-                   callback.error(backendlessError.getCode()+ "");
-               }
+                if(response.isSuccessful()){
+                    callback.success(response.body().getData());
+                }else{
+                    BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                    callback.error(backendlessError.getCode()+ "");
+                }
             }
             @Override
             public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
@@ -238,6 +236,23 @@ public class API {
             }
             @Override
             public void onFailure(Call<BackendlessCollection<Job>> call, Throwable t) {
+
+            }
+        });
+    }
+    public static  void getUserByGeoPoint()
+    {
+        String whereClause = "distance( 50.484542, 4.255018, location.latitude, location.longitude ) < mi(200)";
+        Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
+        call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
+
+            @Override
+            public void onResponse(Call<BackendlessCollection<User>> call, retrofit2.Response<BackendlessCollection<User>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
 
             }
         });

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.francois.priape.SearchActivity">
+    <item
+        android:icon="@drawable/ic_editor_format_list_numbered"
+        app:showAsAction="ifRoom"
+        android:title="@string/list_menu"
+        android:id="@+id/menu_map_list"
+        android:orderInCategory="200"
+        />
+</menu>

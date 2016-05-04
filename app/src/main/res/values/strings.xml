@@ -23,10 +23,18 @@
     <string name="Works">Pour réaliser : </string>
     <string name="search_loading">Recherche&#8230;</string>
     <string name="results">Résultats</string>
+    <string name="list_menu">Liste</string>
+    <string name="update">Mise à jour&#8230;</string>
+    <string name="description">Description de l entreprise : </string>
     <!-- Backendless Errors-->
     <string name="error_fields">Veuillez remplir tous les champs.</string>
     <string name="error_3003">Mauvais identifiants.</string>
     <string name="error_others">Une erreur est survenue.</string>
+
+    <!-- Google map API -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyCuUrtlDUm6NrTwjKuZNDl4UtFyBdXIKXA
+    </string>
 
     <array name="works_name">
         <item>Maçon</item>

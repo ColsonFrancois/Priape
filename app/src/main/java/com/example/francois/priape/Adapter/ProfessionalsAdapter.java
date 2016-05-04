@@ -1,6 +1,7 @@
 package com.example.francois.priape.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.francois.priape.Model.User;
+import com.example.francois.priape.ProfessionalSelectedActivity;
 import com.example.francois.priape.databinding.ProfessionalItemBinding;
 
 import java.util.List;
@@ -32,8 +34,17 @@ public class ProfessionalsAdapter extends RecyclerView.Adapter<ProfessionalsAdap
     }
 
     @Override
-    public void onBindViewHolder(ProfessionalViewHolder holder, int position) {
+    public void onBindViewHolder(ProfessionalViewHolder holder, final int position) {
         holder.binding.setUser(users.get(position));
+        holder.binding.professionalItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProfessionalSelectedActivity.class);
+                intent.putExtra("professional", users.get(position));
+                intent.putExtra("pos", position);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -47,7 +58,6 @@ public class ProfessionalsAdapter extends RecyclerView.Adapter<ProfessionalsAdap
 
         public ProfessionalViewHolder(View itemView) {
             super(itemView);
-
             binding = DataBindingUtil.bind(itemView);
         }
     }

@@ -21,22 +21,44 @@ public class User implements Parcelable {
     private String email;
     private String name;
     private Job job;
+    private int phone;
+    private String description;
+    private String picture;
     private List<Work> works;
     private Boolean professional;
+    private GeoPoint location;
     @SerializedName("user-token")
     private String userToken;
 
+    public User()
+    {
 
-    public User(String __meta, String objectId, String ownerId, String email, Job job)
+    }
+
+    public User(String __meta, String objectId, String ownerId, String email, int phone)
     {
         this.__meta = __meta;
         this.objectId = objectId;
         this.ownerId = ownerId;
         this.email = email;
-        this.job = job;
+        this.phone = phone;
         this.___class = getClass().getSimpleName();
+
+    }
+    public String getDescription() {
+        return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public GeoPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoPoint location) {
+        this.location = location;
+    }
     public String get___class() {
         return ___class;
     }
@@ -116,6 +138,25 @@ public class User implements Parcelable {
         this.works = works;
     }
 
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+
+
+
 
     protected User(Parcel in) {
         ___class = in.readString();
@@ -125,6 +166,9 @@ public class User implements Parcelable {
         email = in.readString();
         name = in.readString();
         job = (Job) in.readValue(Job.class.getClassLoader());
+        phone = in.readInt();
+        description = in.readString();
+        picture = in.readString();
         if (in.readByte() == 0x01) {
             works = new ArrayList<Work>();
             in.readList(works, Work.class.getClassLoader());
@@ -133,6 +177,7 @@ public class User implements Parcelable {
         }
         byte professionalVal = in.readByte();
         professional = professionalVal == 0x02 ? null : professionalVal != 0x00;
+        location = (GeoPoint) in.readValue(GeoPoint.class.getClassLoader());
         userToken = in.readString();
     }
 
@@ -150,6 +195,9 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(name);
         dest.writeValue(job);
+        dest.writeInt(phone);
+        dest.writeString(description);
+        dest.writeString(picture);
         if (works == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -161,6 +209,7 @@ public class User implements Parcelable {
         } else {
             dest.writeByte((byte) (professional ? 0x01 : 0x00));
         }
+        dest.writeValue(location);
         dest.writeString(userToken);
     }
 
