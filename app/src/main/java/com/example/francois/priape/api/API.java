@@ -3,9 +3,8 @@ package com.example.francois.priape.api;
 
 import android.util.Log;
 
-import com.example.francois.priape.Model.GeoPoint;
-import com.example.francois.priape.Model.Job;
 import com.example.francois.priape.Model.User;
+import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.utils.BackendlessCollection;
 import com.example.francois.priape.api.utils.BackendlessError;
 import com.example.francois.priape.api.utils.LoginCredentials;
@@ -173,8 +172,13 @@ public class API {
 
     public static void updateUser()
     {
-        GeoPoint location = new GeoPoint(50.524705, 4.114619);
-        currentUser.setLocation(location);
+/*        GeoPoint location = new GeoPoint(50.524705, 4.114619);
+        currentUser.setLocation(location);*/
+        Work work = new Work("tondre el pelouso");
+        work.setObjectId("2BB694EC-50FB-D6CE-FF8F-60E382415100");
+        currentUser.removeWork();
+        currentUser.addwork(work);
+        Log.i("test", currentUser.getWorks().get(0).getName());
         Call<User> call = apiService.updateUser(currentUser.getObjectId(), currentUser);
         call.enqueue(new retrofit2.Callback<User>(){
 
@@ -193,9 +197,9 @@ public class API {
     }
 
 
-    public  static void GetUsers(String job, String work, final Callback.GetListCallback<User> callback)
+    public  static void GetUsers(Double lat, Double lon,String job, String work, final Callback.GetListCallback<User> callback)
     {
-        String whereClause = "distance( 50.484512, 4.254985, location.latitude, location.longitude ) < mi(200)"+" AND job.name='"+job+"' AND professional=true AND works.name='"+work+"'";
+        String whereClause = "distance( "+lat+", "+lon+", location.latitude, location.longitude ) < km(200)"+" AND job='"+job+"' AND professional=true AND works.name='"+work+"'";
         String sortClause = "distance( 50.484512, 4.254985, location.latitude, location.longitude )";
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
@@ -218,15 +222,16 @@ public class API {
 
     public static void getJob(String job, final Callback.JobCallback callback)
     {
-        String whereClause = "name='" + job + "'";
-        Call<BackendlessCollection<Job>> call = apiService.getJob(0, whereClause);
-        call.enqueue(new retrofit2.Callback<BackendlessCollection<Job>>(){
+        String whereClause = "job='" + job + "'";
+        Call<BackendlessCollection<Work>> call = apiService.getJob(0, whereClause);
+        call.enqueue(new retrofit2.Callback<BackendlessCollection<Work>>(){
+
 
             @Override
-            public void onResponse(Call<BackendlessCollection<Job>> call, retrofit2.Response<BackendlessCollection<Job>> response) {
+            public void onResponse(Call<BackendlessCollection<Work>> call, retrofit2.Response<BackendlessCollection<Work>> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getData().size() != 0)
-                        callback.success(response.body().getData().get(0));
+                        callback.success(response.body().getData());
                     else
                         callback.error(null);
                 } else {
@@ -234,21 +239,23 @@ public class API {
                     callback.error(backendlessError.getCode() + "");
                 }
             }
+
             @Override
-            public void onFailure(Call<BackendlessCollection<Job>> call, Throwable t) {
+            public void onFailure(Call<BackendlessCollection<Work>> call, Throwable t) {
 
             }
         });
     }
-    public static  void getUserByGeoPoint()
+    public static void searchProfessional(String name, final Callback.GetListCallback<User> callback)
     {
-        String whereClause = "distance( 50.484542, 4.255018, location.latitude, location.longitude ) < mi(200)";
+        String whereClause = "name LIKE '"+name+"' AND professional=true";
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
-        call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
-
+        call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>() {
             @Override
             public void onResponse(Call<BackendlessCollection<User>> call, retrofit2.Response<BackendlessCollection<User>> response) {
-
+                if(response.isSuccessful()) {
+                    callback.success(response.body().getData());
+                }
             }
 
             @Override

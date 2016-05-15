@@ -20,7 +20,7 @@ public class User implements Parcelable {
     private String objectId;
     private String email;
     private String name;
-    private Job job;
+    private String job;
     private int phone;
     private String description;
     private String picture;
@@ -45,6 +45,24 @@ public class User implements Parcelable {
         this.___class = getClass().getSimpleName();
 
     }
+
+    public void addwork(Work work)
+    {
+        if(works == null)
+        {
+            this.works = new ArrayList<>();
+        }
+        this.works.add(work);
+    }
+    public void removeWork()
+    {
+        if(works == null)
+        {
+            this.works = new ArrayList<>();
+        }
+        this.works.clear();
+    }
+
     public String getDescription() {
         return description;
     }
@@ -107,11 +125,11 @@ public class User implements Parcelable {
         this.userToken = userToken;
     }
 
-    public Job getJob() {
+    public String getJob() {
         return job;
     }
 
-    public void setJob(Job job) {
+    public void setJob(String job) {
         this.job = job;
     }
     public String getName() {
@@ -157,7 +175,6 @@ public class User implements Parcelable {
 
 
 
-
     protected User(Parcel in) {
         ___class = in.readString();
         __meta = in.readString();
@@ -165,7 +182,7 @@ public class User implements Parcelable {
         objectId = in.readString();
         email = in.readString();
         name = in.readString();
-        job = (Job) in.readValue(Job.class.getClassLoader());
+        job = in.readString();
         phone = in.readInt();
         description = in.readString();
         picture = in.readString();
@@ -194,7 +211,7 @@ public class User implements Parcelable {
         dest.writeString(objectId);
         dest.writeString(email);
         dest.writeString(name);
-        dest.writeValue(job);
+        dest.writeString(job);
         dest.writeInt(phone);
         dest.writeString(description);
         dest.writeString(picture);

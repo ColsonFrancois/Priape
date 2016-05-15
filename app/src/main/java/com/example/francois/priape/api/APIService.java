@@ -1,7 +1,7 @@
 package com.example.francois.priape.api;
 
-import com.example.francois.priape.Model.Job;
 import com.example.francois.priape.Model.User;
+import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.utils.BackendlessCollection;
 import com.example.francois.priape.api.utils.LoginCredentials;
 import com.example.francois.priape.api.utils.RegisterBody;
@@ -33,7 +33,9 @@ public interface APIService {
     @PUT("users/{id}")
     Call<User> updateUser(@Path("id") String id, @Body User user);
 
-    @GET("data/Job")
-    Call<BackendlessCollection<Job>> getJob(@Query("offset") int offset, @Query("where") String where);
+    @GET("data/Work")
+    Call<BackendlessCollection<Work>> getJob(@Query("offset") int offset, @Query("where") String where);
+
+
 
 }

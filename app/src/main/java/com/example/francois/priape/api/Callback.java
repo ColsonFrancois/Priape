@@ -1,6 +1,6 @@
 package com.example.francois.priape.api;
 
-import com.example.francois.priape.Model.Job;
+import com.example.francois.priape.Model.Work;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public abstract class Callback {
         void error(String errorCode);
     }
     public interface JobCallback{
-        void success(Job job);
+        void success(List<Work> works);
         void error(String errorCode);
     }
 public interface GetListCallback<T>{

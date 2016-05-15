@@ -26,10 +26,17 @@
     <string name="list_menu">Liste</string>
     <string name="update">Mise à jour&#8230;</string>
     <string name="description">Description de l entreprise : </string>
+    <string name="SearchByName">Rechercher par nom</string>
+    <string name="location">où nous trouver : </string>
+    <string name="profil">Votre profil</string>
+    <string name="notfound">Aucun professionels trouvés</string>
+
     <!-- Backendless Errors-->
     <string name="error_fields">Veuillez remplir tous les champs.</string>
     <string name="error_3003">Mauvais identifiants.</string>
     <string name="error_others">Une erreur est survenue.</string>
+    <string name="NotFoundLocalisation">Localisation introuvable</string>
+
 
     <!-- Google map API -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">

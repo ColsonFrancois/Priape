@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,6 @@ import com.example.francois.priape.api.Callback;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -28,19 +28,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends AppCompatActivity implements GoogleMap.OnMarkerClickListener {
+public class MapActivity extends AppCompatActivity implements LocationListener, GoogleMap.OnMarkerClickListener {
 
-    private GoogleMap googleMap;
-    private LocationManager locationManager;
+    /*  private GoogleMap googleMap;*/
     private String job;
     private String work;
-    private String provider;
     private List<User> users;
+    private GoogleMap googleMap;
+    private LocationManager locationManager;
+    private String provider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
         final MaterialDialog progress = new MaterialDialog.Builder(MapActivity.this)
                 .content(R.string.search_loading)
                 .progress(true, 0)
@@ -54,73 +55,69 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMarker
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
+
+
         //Initialize map
         SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_map);
         googleMap = supportMapFragment.getMap();
         googleMap.setMapType(googleMap.MAP_TYPE_NORMAL);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
+
 
         //Get Strings from previous page "SearchActivity"
         if (getIntent().getStringExtra("job") != null) {
             job = getIntent().getStringExtra("job");
-            if(getIntent().getStringExtra("work") != null){
+            if (getIntent().getStringExtra("work") != null) {
                 work = getIntent().getStringExtra("work");
 
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            API.GetUsers(job, work, new Callback.GetListCallback<User>() {
-                @Override
-                public void success(List<User> results) {
-                        users= new ArrayList<User>(results);
-                        addMarker(results);
-                        progress.dismiss();
-                }
-
-                @Override
-                public void error(String errorCode) {
-                    progress.dismiss();
-                    Toast.makeText(getApplicationContext(), errorCode, Toast.LENGTH_LONG).show();
-                }
-            });
-            }
-        }
-/*            if (provider != null && !provider.equals("")) {
-
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                Location location = locationManager.getLastKnownLocation(provider);
-                locationManager.requestLocationUpdates(provider, 2000, 1, (LocationListener) this);
-                if(location != null)
+                Criteria criteria = new Criteria();
+                provider = locationManager.getBestProvider(criteria, false);
+                if(provider != null && !provider.equals(""))
                 {
-                    Log.i("IN", "IN");
-                    onLocationChanged(location);
+                    Location location = locationManager.getLastKnownLocation(provider);
+                    locationManager.requestLocationUpdates(provider, 2000, 1, this);
+                    if(location!=null)
+                    {
+                        onLocationChanged(location);
+
+                        API.GetUsers(location.getLatitude(), location.getLongitude(),job, work, new Callback.GetListCallback<User>() {
+                            @Override
+                            public void success(List<User> results) {
+                                users = new ArrayList<User>(results);
+                                if(users.size() > 0)
+                                addMarker(results);
+                                else
+                                Toast.makeText(getApplicationContext(), R.string.notfound, Toast.LENGTH_LONG).show();
+                                progress.dismiss();
+
+                            }
+
+                            @Override
+                            public void error(String errorCode) {
+                                progress.dismiss();
+                                Toast.makeText(getApplicationContext(), errorCode, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else{
-                    Toast.makeText(getBaseContext(), "Location introuvable", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
                 }
-            }else{
-                Toast.makeText(getApplicationContext(), "Provider null", Toast.LENGTH_LONG).show();
-            }*/
+            }
+        }
+
     }
-    public  void onLocationChanged(Location location)
-    {
-        Log.i("LatLong", Double.toString(location.getLatitude()) +"," + Double.toString(location.getLongitude()));
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-        googleMap.addMarker(new MarkerOptions().position(latLng).title("Votre position").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_play_dark)));
-    }
+
+
     private void addMarker(List<User> users)
     {
-
         for(User user : users)
         {
 
@@ -150,17 +147,41 @@ public class MapActivity extends AppCompatActivity implements GoogleMap.OnMarker
     }
 
     @Override
+    public void onLocationChanged(Location location) {
+       /* Log.i("LatLng", Double.toString(location.getLatitude())+ Double.toString(location.getLongitude()));*/
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+
+    @Override
     public boolean onMarkerClick(Marker marker) {
-        User userFound = new User();
         for(User user : users)
         {
-            if(user.getName() == marker.getTitle())
+
+            if(user.getName().equals(marker.getTitle()))
             {
-                userFound = user;
-                Log.i("found", user.getName());
+                Intent intent = new Intent(getApplicationContext(),ProfessionalSelectedActivity.class);
+                intent.putExtra("professional", user);
+                startActivity(intent);
             }
         }
-
+        /*intent.putExtra("professional", users.get(position));*/
         return false;
     }
 }

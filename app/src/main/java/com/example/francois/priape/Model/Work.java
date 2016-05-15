@@ -11,6 +11,7 @@ public class Work implements Parcelable {
 
     private String ___class;
     private String name;
+    private String objectId;
 
 
     public Work(String name)
@@ -57,4 +58,12 @@ public class Work implements Parcelable {
             return new Work[size];
         }
     };
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
 }

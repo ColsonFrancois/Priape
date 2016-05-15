@@ -2,7 +2,9 @@ package com.example.francois.priape;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.francois.priape.Model.Job;
+import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
@@ -22,13 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
-    Spinner spinnerWorks;
+   private Spinner spinnerWorks;
+    private SearchView mSearchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         final Button searchButton = (Button)findViewById(R.id.search_search);
         final Spinner spinnerJobs = (Spinner)findViewById(R.id.search_jobs);
+
+        API.updateUser();
+
 
         //Initialise toolbar element
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
@@ -54,8 +60,8 @@ public class SearchActivity extends AppCompatActivity {
                 String job = spinnerJobs.getSelectedItem().toString();
                 API.getJob(job, new Callback.JobCallback() {
                     @Override
-                    public void success(Job job) {
-                        addItemsOnSpinnerWork(job);
+                    public void success(List<Work> works) {
+                        addItemsOnSpinnerWork(works);
                         progress.dismiss();
 
                     }
@@ -79,6 +85,43 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_search, menu);
+        final MenuItem searchItem = menu.findItem(R.id.menu_search_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setQueryHint(getString(R.string.SearchByName));
+
+       mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String query) {
+               final MaterialDialog progress = new MaterialDialog.Builder(SearchActivity.this)
+                       .content(R.string.search_loading)
+                       .progress(true, 0)
+                       .show();
+               API.searchProfessional(query, new Callback.GetListCallback<User>() {
+                   @Override
+                   public void success(List<User> results) {
+                       progress.dismiss();
+                       ArrayList<User> list = new ArrayList<User>(results);
+                       Intent intent = new Intent(getApplicationContext(), professionalsActivity.class);
+                       intent.putParcelableArrayListExtra("listUser", list);
+                       startActivity(intent);
+                   }
+
+                   @Override
+                   public void error(String errorCode) {
+
+                   }
+               });
+               return false;
+           }
+
+           @Override
+           public boolean onQueryTextChange(String newText) {
+            /*  When text change*/
+               return false;
+           }
+       });
+
+
         return true;
     }
 
@@ -104,13 +147,20 @@ public class SearchActivity extends AppCompatActivity {
             });
             return true;
         }
+        if(id == R.id.menu_search_profil)
+        {
+            Intent intent = new Intent(getApplicationContext(), ProfilActivity.class);
+            startActivity(intent);
+            return  true;
+        }
         return super.onOptionsItemSelected(item);
     }
-    public void addItemsOnSpinnerWork(Job job)
+    public void addItemsOnSpinnerWork(List<Work> works)
     {
         spinnerWorks = (Spinner)findViewById(R.id.search_works);
+
         List<String> list = new ArrayList<String>();
-        for(Work work: job.getWorks())
+        for(Work work : works)
         {
             list.add(work.getName());
         }

@@ -17,6 +17,14 @@
 
             android:layout_height="wrap_content"
             layout="@layout/toolbar"/>
+
+
+<!--    <ImageView
+        android:layout_marginTop="55dp"
+        android:layout_width="800dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_hand_holding_leaves_8"
+        />-->
     <android.support.v7.widget.CardView
         android:id="@+id/Search_Card"
         android:layout_margin="16dp"
@@ -25,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp">
+
 
         <LinearLayout
 
