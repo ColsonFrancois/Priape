@@ -1,11 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    tools:context=".LoginActivity">
+
+
+<layout>
+    <data>
+        <variable name="LoginActivity" type="com.example.francois.priape.LoginActivity"/>
+    </data>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.francois.priape.LoginActivity">
 
     <LinearLayout
         android:id="@+id/ignored"
@@ -85,6 +91,7 @@
                 android:layout_gravity="right"
                 />
             <TextView
+                android:id="@+id/login_forgot_password"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="16dp"
@@ -100,3 +107,4 @@
     </android.support.v7.widget.CardView>
 </RelativeLayout>
 
+</layout>

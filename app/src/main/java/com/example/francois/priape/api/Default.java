@@ -15,5 +15,7 @@ public abstract class Default {
     public  static  String VERSION = "v1";
     public  static String SERVER_URL = "https://api.backendless.com/"+ VERSION + "/";
 
+    // COde for ActivityForResult
+    public static final int SELECT_PICTURE = 1;
 
 }

@@ -8,12 +8,14 @@ public class RegisterBody {
     private String password;
     private String name;
     private Boolean professional;
+    private String picture;
 
 
-    public RegisterBody(String email, String password, String name, Boolean professional) {
+    public RegisterBody(String email, String password, String name, Boolean professional, String picture) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.professional = professional;
+        this.picture = picture;
     }
 }

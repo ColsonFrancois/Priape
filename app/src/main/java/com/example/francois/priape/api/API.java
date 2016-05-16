@@ -7,6 +7,7 @@ import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.utils.BackendlessCollection;
 import com.example.francois.priape.api.utils.BackendlessError;
+import com.example.francois.priape.api.utils.BackendlessMessage;
 import com.example.francois.priape.api.utils.LoginCredentials;
 import com.example.francois.priape.api.utils.RegisterBody;
 import com.example.francois.priape.api.utils.UserLogin;
@@ -17,15 +18,20 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -125,9 +131,9 @@ public class API {
         });
     }
 
-    public static void Register(String email, String name, String password, final Callback.RegisterCallback callback)
+    public static void Register(String email, String name, String password,String picture, final Callback.RegisterCallback callback)
     {
-        Call<Void> call = apiService.register(new RegisterBody(email, password, name, false));
+        Call<Void> call = apiService.register(new RegisterBody(email, password, name,false, picture));
         call.enqueue(new retrofit2.Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
@@ -261,6 +267,46 @@ public class API {
             @Override
             public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
 
+            }
+        });
+    }
+
+    public static void uploadFile(File fileUri, final Callback.UploadFileCallback callback)
+    {
+        File  file = new File(fileUri.getPath());
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part body = MultipartBody.Part.createFormData("picture", file.getName(), requestBody);
+
+        String descriptionString = "Hello, this is description speaking";
+        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
+
+        Call<ResponseBody> call = apiService.upload(description, body, file.getName());
+        call.enqueue(new retrofit2.Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+
+                        String body = response.body().toString();
+
+                    try {
+                        callback.success(BackendlessMessage.extractFromResponseBody(response.body().string()).getFileURL());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    Log.i("debug", "-> " + response.raw().toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.i("Backendless", "- " + t.getLocalizedMessage());
+                callback.error(t.getLocalizedMessage());
             }
         });
     }

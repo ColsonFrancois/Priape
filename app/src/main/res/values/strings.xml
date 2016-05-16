@@ -30,6 +30,7 @@
     <string name="location">où nous trouver : </string>
     <string name="profil">Votre profil</string>
     <string name="notfound">Aucun professionels trouvés</string>
+    <string name="badPassword">Veuillez faire correspondre les mot de passes</string>
 
     <!-- Backendless Errors-->
     <string name="error_fields">Veuillez remplir tous les champs.</string>

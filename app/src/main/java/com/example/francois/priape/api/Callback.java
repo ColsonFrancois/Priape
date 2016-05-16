@@ -29,4 +29,8 @@ public interface GetListCallback<T>{
     void success(List<T> results);
     void error(String errorCode);
 }
+    public interface UploadFileCallback {
+        void success(String url);
+        void error(String errorCode);
+    }
 }

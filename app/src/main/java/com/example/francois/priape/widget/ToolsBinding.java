@@ -21,7 +21,7 @@ public class ToolsBinding {
         if (pictureUrl != null && !pictureUrl.isEmpty()) {
             Picasso.with(imageView.getContext()).load(pictureUrl).fit().centerCrop().into(imageView);
         } else {
-            imageView.setImageResource(R.drawable.ic_image_photo_camera);
+            imageView.setImageResource(R.drawable.ic_no_picture);
         }
     }
 }
