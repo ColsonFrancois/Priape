@@ -31,6 +31,14 @@
     <string name="profil">Votre profil</string>
     <string name="notfound">Aucun professionels trouvés</string>
     <string name="badPassword">Veuillez faire correspondre les mot de passes</string>
+    <string name="accept">Valider</string>
+
+    <string name="errorEmailInscription">Email incorrect</string>
+    <string name="errorEmail">veuillez entrer une adresse électronique valable</string>
+    <string name="toast_message_success_recovery">Un email vous a été envoyé</string>
+
+    <string name="error_3020">Impossible de trouver l\'utilisateur avec le login spécifié</string>
+    <string name="error_3025">Une erreur est survenue lors de la récupération du mot de passe. </string>
 
     <!-- Backendless Errors-->
     <string name="error_fields">Veuillez remplir tous les champs.</string>

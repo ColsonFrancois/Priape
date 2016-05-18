@@ -45,5 +45,7 @@ public interface APIService {
     @POST("files/images/{name}")
     Call<ResponseBody> upload(@Part("description") RequestBody description, @Part MultipartBody.Part file, @Path("name") String name);
 
+    @GET("users/restorepassword/{mail}")
+    Call<Void> recoveryPassword(@Path("mail") String mail);
 
 }

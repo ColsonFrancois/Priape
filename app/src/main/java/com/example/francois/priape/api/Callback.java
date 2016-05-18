@@ -33,4 +33,9 @@ public interface GetListCallback<T>{
         void success(String url);
         void error(String errorCode);
     }
+
+    public interface RecoveryCallback{
+        void success();
+        void error(String errorCode);
+    }
 }

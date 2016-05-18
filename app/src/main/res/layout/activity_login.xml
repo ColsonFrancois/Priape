@@ -5,6 +5,7 @@
         <variable name="LoginActivity" type="com.example.francois.priape.LoginActivity"/>
     </data>
     <RelativeLayout
+        android:background="@color/colorPrimary"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"

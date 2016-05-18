@@ -311,5 +311,28 @@ public class API {
         });
     }
 
+    public static void recoveryPassword(String mail,final Callback.RecoveryCallback callback){
+        Call<Void> call = apiService.recoveryPassword(mail);
+
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i("Message",response.toString());
+                    callback.success();
+
+                } else {
+                    BackendlessError backendLessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                    callback.error(backendLessError.getCode() + "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i("Backendless", "- " + t.getLocalizedMessage());
+                callback.error(t.getLocalizedMessage());
+            }
+        });
+    }
 
 }
