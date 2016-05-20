@@ -7,6 +7,13 @@
         app:showAsAction="ifRoom"
         android:title="@string/list_menu"
         android:id="@+id/menu_professional_selected_phone"
-        android:orderInCategory="200"
+        android:orderInCategory="101"
+        />
+    <item
+        android:icon="@drawable/ic_editor_insert_comment"
+        app:showAsAction="ifRoom"
+        android:title="@string/list_menu"
+        android:id="@+id/menu_professional_selected_comment"
+        android:orderInCategory="100"
         />
 </menu>

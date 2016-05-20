@@ -32,10 +32,12 @@
     <string name="notfound">Aucun professionels trouvés</string>
     <string name="badPassword">Veuillez faire correspondre les mot de passes</string>
     <string name="accept">Valider</string>
-
+    <string name="comment">commentaires</string>
+    <string name="send">poster</string>
     <string name="errorEmailInscription">Email incorrect</string>
     <string name="errorEmail">veuillez entrer une adresse électronique valable</string>
     <string name="toast_message_success_recovery">Un email vous a été envoyé</string>
+    <string name="newComment">Nouveau commentaire</string>
 
     <string name="error_3020">Impossible de trouver l\'utilisateur avec le login spécifié</string>
     <string name="error_3025">Une erreur est survenue lors de la récupération du mot de passe. </string>

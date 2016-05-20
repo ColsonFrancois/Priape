@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.francois.priape.Model.Adress;
 import com.example.francois.priape.Model.User;
@@ -46,13 +48,18 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
             user = getIntent().getParcelableExtra("professional");
             binding.setUser(user);
 
-            geocoder = new Geocoder(this, Locale.getDefault());
+            geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
 
 
             try {
+
                 addresses = geocoder.getFromLocation(user.getLocation().getLatitude(), user.getLocation().getLongitude(), 1);// Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                Log.d("test",Double.toString(user.getLocation().getLatitude()));
+                Log.d("test",Double.toString(user.getLocation().getLongitude()));
+                Log.d("test",addresses.toString());
                 if(addresses != null)
                 {
+
                     Adress adress = new Adress(addresses.get(0).getAddressLine(0), addresses.get(0).getLocality(), addresses.get(0).getCountryName());
                     binding.setAdress(adress);
                 }
@@ -60,6 +67,7 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.d("test", e.getMessage());
             }
         }
 
@@ -79,7 +87,7 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             finish();
             return true;
-        } else if (id == R.id.menu_professional_selected_phone) {
+        }  else if (id == R.id.menu_professional_selected_phone) {
             Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Integer.toString(user.getPhone())));
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -91,8 +99,16 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
                 // for ActivityCompat#requestPermissions for more details.
 
             }
+
             startActivity(intent);
 
+        }
+        else if(id == R.id.menu_professional_selected_comment)
+        {
+            Toast.makeText(getApplicationContext(), "in", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), CommentsActivity.class);
+            intent.putExtra("professional", user);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

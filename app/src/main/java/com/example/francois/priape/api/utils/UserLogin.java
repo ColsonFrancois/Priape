@@ -30,7 +30,8 @@ public class UserLogin {
                     bodyJSON.getString("objectId"),
                     bodyJSON.getString("ownerId"),
                     bodyJSON.getString("email"),
-                    bodyJSON.getInt("phone")
+                    bodyJSON.getInt("phone"),
+                    bodyJSON.getString("name")
             );
 
         }catch (JSONException e){

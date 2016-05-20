@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorButtonNormal">@color/colorDarkPrimary</item>
         <item name="colorPrimaryDark">@color/colorHard</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

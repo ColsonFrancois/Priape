@@ -1,5 +1,6 @@
 package com.example.francois.priape.api;
 
+import com.example.francois.priape.Model.Comment;
 import com.example.francois.priape.Model.Work;
 
 import java.util.List;
@@ -36,6 +37,10 @@ public interface GetListCallback<T>{
 
     public interface RecoveryCallback{
         void success();
+        void error(String errorCode);
+    }
+    public interface NewCommentCallback{
+        void success(Comment comment);
         void error(String errorCode);
     }
 }

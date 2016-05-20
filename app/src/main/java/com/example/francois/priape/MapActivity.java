@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,15 +38,24 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
     private GoogleMap googleMap;
     private LocationManager locationManager;
     private String provider;
+    private SeekBar seekbar;
+    private TextView km;
+    private float zoom = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        final MaterialDialog progress = new MaterialDialog.Builder(MapActivity.this)
-                .content(R.string.search_loading)
-                .progress(true, 0)
-                .show();
+
+
+
+        //initialize Seekbar & Text
+        seekbar = (SeekBar)findViewById(R.id.MAP_SEEKBAR);
+        seekbar.setProgress(30);
+        seekbar.incrementProgressBy(5);
+        seekbar.setMax(100);
+        km = (TextView)findViewById(R.id.MAP_KM);
+
 
         //Initialise toolbar element
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -53,9 +64,6 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
         //Set back button
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
 
 
         //Initialize map
@@ -70,53 +78,82 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
             if (getIntent().getStringExtra("work") != null) {
                 work = getIntent().getStringExtra("work");
 
-                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-                Criteria criteria = new Criteria();
-                provider = locationManager.getBestProvider(criteria, false);
-                if(provider != null && !provider.equals(""))
-                {
-                    Location location = locationManager.getLastKnownLocation(provider);
-                    locationManager.requestLocationUpdates(provider, 2000, 1, this);
-                    if(location!=null)
-                    {
-                        onLocationChanged(location);
-
-                        API.GetUsers(location.getLatitude(), location.getLongitude(),job, work, new Callback.GetListCallback<User>() {
-                            @Override
-                            public void success(List<User> results) {
-                                users = new ArrayList<User>(results);
-                                if(users.size() > 0)
-                                addMarker(results);
-                                else
-                                Toast.makeText(getApplicationContext(), R.string.notfound, Toast.LENGTH_LONG).show();
-                                progress.dismiss();
-
-                            }
-
-                            @Override
-                            public void error(String errorCode) {
-                                progress.dismiss();
-                                Toast.makeText(getApplicationContext(), errorCode, Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                    else
-                    {
-                        Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
-                }
+                GetProfessionals("30");
             }
         }
 
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                float add = (float)progress* (float)0.04;
+                zoom = 12 - add;
+                km.setText(Integer.toString(progress));
+                GetProfessionals(Integer.toString(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+    }
+
+    public void GetProfessionals(String Kilometre)
+    {
+
+
+        googleMap.clear();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        if(provider != null && !provider.equals(""))
+        {
+            Location location = locationManager.getLastKnownLocation(provider);
+            locationManager.requestLocationUpdates(provider, 2000, 1, this);
+            if(location!=null)
+            {
+                onLocationChanged(location);
+
+                API.GetUsers(location.getLatitude(), location.getLongitude(),job,Kilometre, work, new Callback.GetListCallback<User>() {
+                    @Override
+                    public void success(List<User> results) {
+                        users = new ArrayList<User>(results);
+                        if(users.size() > 0)
+                            addMarker(results);
+                        else
+                            Toast.makeText(getApplicationContext(), R.string.notfound, Toast.LENGTH_LONG).show();
+
+
+                    }
+
+                    @Override
+                    public void error(String errorCode) {
+
+                        Toast.makeText(getApplicationContext(), errorCode, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            else
+            {
+                Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
+        }
     }
 
 
     private void addMarker(List<User> users)
     {
+
         for(User user : users)
         {
 
@@ -149,7 +186,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
     public void onLocationChanged(Location location) {
        /* Log.i("LatLng", Double.toString(location.getLatitude())+ Double.toString(location.getLongitude()));*/
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     @Override

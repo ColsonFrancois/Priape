@@ -52,7 +52,9 @@
             android:name=".ProfessionalSelectedActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ProfilActivity" />
-        <activity android:name=".PasswordRecorveryActivity"></activity>
+        <activity android:name=".PasswordRecorveryActivity" />
+        <activity android:name=".CommentsActivity" />
+        <activity android:name=".NewCommentActivity"></activity>
     </application>
 
 </manifest>

@@ -35,13 +35,14 @@ public class User implements Parcelable {
 
     }
 
-    public User(String __meta, String objectId, String ownerId, String email, int phone)
+    public User(String __meta, String objectId, String ownerId, String email, int phone, String name)
     {
         this.__meta = __meta;
         this.objectId = objectId;
         this.ownerId = ownerId;
         this.email = email;
         this.phone = phone;
+        this.name = name;
         this.___class = getClass().getSimpleName();
 
     }

@@ -1,5 +1,6 @@
 package com.example.francois.priape.api;
 
+import com.example.francois.priape.Model.Comment;
 import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.utils.BackendlessCollection;
@@ -47,5 +48,11 @@ public interface APIService {
 
     @GET("users/restorepassword/{mail}")
     Call<Void> recoveryPassword(@Path("mail") String mail);
+
+    @POST("data/Comment")
+    Call<Comment> newComment(@Body Comment comment);
+
+    @GET("data/Comment")
+    Call<BackendlessCollection<Comment>> getComments(@Query("offset") int offset, @Query("where") String where);
 
 }

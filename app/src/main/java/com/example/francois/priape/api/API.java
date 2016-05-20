@@ -3,6 +3,7 @@ package com.example.francois.priape.api;
 
 import android.util.Log;
 
+import com.example.francois.priape.Model.Comment;
 import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.utils.BackendlessCollection;
@@ -11,6 +12,7 @@ import com.example.francois.priape.api.utils.BackendlessMessage;
 import com.example.francois.priape.api.utils.LoginCredentials;
 import com.example.francois.priape.api.utils.RegisterBody;
 import com.example.francois.priape.api.utils.UserLogin;
+import com.example.francois.priape.session.Singleton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -57,8 +59,6 @@ public class API {
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-
-
                         Request.Builder request = chain.request().newBuilder()
                                 .addHeader("application-id", Default.APPLICATION_ID)
                                 .addHeader("secret-key", Default.SECRET_KEY)
@@ -74,17 +74,13 @@ public class API {
                 }).build();
 
         GsonBuilder builder = new GsonBuilder();
-
         builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
             @Override
             public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 return new Date(json.getAsJsonPrimitive().getAsLong());
             }
         });
-
         Gson gson = builder.setDateFormat(dateFormatter.toPattern()).create();
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Default.SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -93,9 +89,7 @@ public class API {
 
         apiService = retrofit.create(APIService.class);
     }
-
     public static User getCurrentUser(){return currentUser;}
-
     public static void login(String username, String password, final Callback.LoginCallback callback) {
         Call<User> loginCall = apiService.login(new LoginCredentials(username, password));
         loginCall.enqueue(new retrofit2.Callback<User>() {
@@ -107,9 +101,9 @@ public class API {
                         String bodyJson = new Gson().toJson(response.body()).toString();
                         UserLogin userLogin = new UserLogin(bodyJson);
                         currentUser = userLogin.getUser();
+                        /*currentUser.setUserToken(userLogin.getToken());*/
+                        Singleton.getInstance().setUser(currentUser);
                         token = userLogin.getToken();
-                        Log.i("TOKEN", token);
-
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -130,7 +124,22 @@ public class API {
             }
         });
     }
+    public static void newComment(Comment comment, final Callback.NewCommentCallback callback)
+    {
+        Call<Comment> call = apiService.newComment(comment);
+        call.enqueue(new retrofit2.Callback<Comment>(){
 
+            @Override
+            public void onResponse(Call<Comment> call, retrofit2.Response<Comment> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+
+            }
+        });
+    }
     public static void Register(String email, String name, String password,String picture, final Callback.RegisterCallback callback)
     {
         Call<Void> call = apiService.register(new RegisterBody(email, password, name,false, picture));
@@ -202,10 +211,32 @@ public class API {
         });
     }
 
+    public static void getComments(String professional, final Callback.GetListCallback<Comment> callback){
+        String whereClause = "professional='"+professional+"'";
+        Call<BackendlessCollection<Comment>> call = apiService.getComments(0, whereClause);
+        call.enqueue(new retrofit2.Callback<BackendlessCollection<Comment>>(){
 
-    public  static void GetUsers(Double lat, Double lon,String job, String work, final Callback.GetListCallback<User> callback)
+            @Override
+            public void onResponse(Call<BackendlessCollection<Comment>> call, retrofit2.Response<BackendlessCollection<Comment>> response) {
+                    if(response.isSuccessful()){
+                        callback.success(response.body().getData());
+                    } else{
+                        BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                        callback.error(backendlessError.getCode()+ "");
+                    }
+
+            }
+
+            @Override
+            public void onFailure(Call<BackendlessCollection<Comment>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public  static void GetUsers(Double lat, Double lon,String job, String km, String work, final Callback.GetListCallback<User> callback)
     {
-        String whereClause = "distance( "+lat+", "+lon+", location.latitude, location.longitude ) < km(200)"+" AND job='"+job+"' AND professional=true AND works.name='"+work+"'";
+        String whereClause = "distance( "+lat+", "+lon+", location.latitude, location.longitude ) < km("+km+")"+" AND job='"+job+"' AND professional=true AND works.name='"+work+"'";
         String sortClause = "distance( 50.484512, 4.254985, location.latitude, location.longitude )";
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
