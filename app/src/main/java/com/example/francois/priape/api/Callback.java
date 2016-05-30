@@ -1,6 +1,6 @@
 package com.example.francois.priape.api;
 
-import com.example.francois.priape.Model.Comment;
+import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Callback {
 
     public interface LoginCallback{
-        void success();
+        void success(User user);
         void error(String errorCode);
     }
     public interface RegisterCallback{
@@ -40,7 +40,7 @@ public interface GetListCallback<T>{
         void error(String errorCode);
     }
     public interface NewCommentCallback{
-        void success(Comment comment);
+        void success();
         void error(String errorCode);
     }
 }

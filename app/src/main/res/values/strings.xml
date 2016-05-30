@@ -38,6 +38,11 @@
     <string name="errorEmail">veuillez entrer une adresse électronique valable</string>
     <string name="toast_message_success_recovery">Un email vous a été envoyé</string>
     <string name="newComment">Nouveau commentaire</string>
+    <string name="note">Note générale :</string>
+    <string name="noone">Aucune notes</string>
+    <string name="ok">ok</string>
+    <string name="professional">Professionel ?</string>
+    <string name="site"><u>Rendez-vous sur notre site</u></string>
 
     <string name="error_3020">Impossible de trouver l\'utilisateur avec le login spécifié</string>
     <string name="error_3025">Une erreur est survenue lors de la récupération du mot de passe. </string>
@@ -47,12 +52,15 @@
     <string name="error_3003">Mauvais identifiants.</string>
     <string name="error_others">Une erreur est survenue.</string>
     <string name="NotFoundLocalisation">Localisation introuvable</string>
+    <string name="NoInternet">Aucune connexion internet.</string>
 
 
     <!-- Google map API -->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
         AIzaSyCuUrtlDUm6NrTwjKuZNDl4UtFyBdXIKXA
     </string>
+
+    <string name="E3004">test</string>
 
     <array name="works_name">
         <item>Maçon</item>

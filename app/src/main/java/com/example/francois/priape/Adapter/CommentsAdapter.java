@@ -25,6 +25,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         this.mContext = mContext;
     }
 
+
+
     @Override
     public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CommentItemBinding binding = CommentItemBinding.inflate(LayoutInflater.from(mContext), parent, false);
@@ -32,7 +34,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     }
 
     @Override
-    public void onBindViewHolder(CommentViewHolder holder, int position) {
+    public void onBindViewHolder(CommentViewHolder holder, final int position) {
         holder.binding.setComment(comments.get(position));
 
     }
@@ -42,6 +44,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         return comments.size();
     }
 
+
+    public void add(Comment comment)
+    {
+        comments.add(0,comment);
+        notifyItemInserted(0);
+    }
+
+
     public static class CommentViewHolder extends RecyclerView.ViewHolder{
         public CommentItemBinding binding;
     public CommentViewHolder(View itemView) {
@@ -49,4 +59,5 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         binding = DataBindingUtil.bind(itemView);
     }
 }
+
 }

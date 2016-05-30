@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.example.francois.priape.Model.User;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
+import com.example.francois.priape.api.Default;
 import com.example.francois.priape.databinding.ActivityLoginBinding;
+import com.example.francois.priape.session.SessionManager;
+import com.example.francois.priape.session.Singleton;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private SessionManager sessionManager;
     private ActivityLoginBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,30 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+
+
+        sessionManager = new SessionManager(this);
+        sessionManager.logout();
+        if(sessionManager.isLogged())
+        {
+            User user = new User();
+            API.setCurrentUser(user);
+            API.getUser(sessionManager.getToken(), sessionManager.getObjectid(), new Callback.LoginCallback() {
+                @Override
+                public void success(User user) {
+                    Singleton.getInstance().setUser(user);
+                    Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void error(String errorCode) {
+
+                }
+            });
+        }
+
+
 
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,33 +63,36 @@ public class LoginActivity extends AppCompatActivity {
                             .progress(true, 0)
                             .show();
 
-
-                    API.login(binding.email.getText().toString(), binding.password.getText().toString(), new Callback.LoginCallback() {
-                        @Override
-                        public void success() {
-                            progress.dismiss();
-                            Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        @Override
-                        public void error(String errorCode) {
-                            progress.dismiss();
-                            Log.i("error", errorCode.toString());
-                            String errorMessage;
-                            if (Integer.parseInt(errorCode) == 3003) {
-                                errorMessage = getString(R.string.error_3003);
-                            } else {
-                                errorMessage = getString(R.string.error_others);
+                    if(Default.haveNetworkConnection(getApplicationContext())) {
+                        API.login(binding.email.getText().toString(), binding.password.getText().toString(), new Callback.LoginCallback() {
+                            @Override
+                            public void success(User user) {
+                            /*    sessionManager.insertUser(user.getUserToken(), user.getObjectId());*/
+                                progress.dismiss();
+                                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
-                            // Creating a popup will appear with the error message
-                            new MaterialDialog.Builder(LoginActivity.this)
-                                    .content(errorMessage)
-                                    .positiveText(android.R.string.ok)
-                                    .show();
-                        }
-                    });
+
+                            @Override
+                            public void error(String errorCode) {
+                                progress.dismiss();
+                                Log.i("error", errorCode.toString());
+                                String errorMessage;
+                                if (Integer.parseInt(errorCode) == 3003) {
+                                    errorMessage = getString(R.string.error_3003);
+                                } else {
+                                    String test = "E3003";
+                                    errorMessage = getString(R.string.error_others);
+                                    Error(errorMessage);
+                                }
+
+                            }
+                        });
+                    }else{
+                            progress.dismiss();
+                        Error(getString(R.string.NoInternet));
+                    }
                 }
             }
         });
@@ -84,6 +115,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    }
+    public void Error(String message)
+    {
+        // Creating a popup will appear with the error message
+        new MaterialDialog.Builder(LoginActivity.this)
+                .content(message)
+                .positiveText(android.R.string.ok)
+                .show();
     }
 
 }

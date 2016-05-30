@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.francois.priape.Model.Comment;
+import com.example.francois.priape.R;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
 import com.example.francois.priape.databinding.ActivityNewCommentBinding;
@@ -39,8 +40,8 @@ public class NewCommentActivity extends AppCompatActivity {
                 Comment comment = new Comment(binding.newCommentMessage.getText().toString(), Singleton.getInstance().getUser().getName(), professional,5);
                 API.newComment(comment, new Callback.NewCommentCallback() {
                     @Override
-                    public void success(Comment comment) {
-                        finish();
+                    public void success() {
+
                     }
 
                     @Override

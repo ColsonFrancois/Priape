@@ -1,0 +1,65 @@
+<!-- fragment_edit_name.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_name"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+    <com.rengwuxian.materialedittext.MaterialEditText
+
+        android:id="@+id/fragment_comment"
+        app:met_floatingLabel="normal"
+        android:drawablePadding="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:singleLine="true"
+        android:hint="@string/comment"
+        android:lines="5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        />
+    <TextView
+        android:layout_marginTop="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="Notez ce professionel"/>
+    <SeekBar
+        android:id="@+id/MAP_SEEKBAR"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:progress="80"
+        />
+    <LinearLayout
+        android:layout_marginTop="-15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/fragment_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/10"/>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/fragment_agree"
+        android:layout_marginTop="15dp"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:textColor="@color/colorAccent"
+        android:layout_gravity="right"
+        />
+</LinearLayout>

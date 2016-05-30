@@ -7,7 +7,7 @@
             type="com.example.francois.priape.Model.Comment"/>
     </data>
     <RelativeLayout
-        android:id="@+id/professional_item"
+        android:id="@+id/comment_item"
         android:layout_width="match_parent"
         android:layout_height="105dp"
         >

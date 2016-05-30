@@ -10,7 +10,7 @@
     </data>
 
     <ScrollView
-        android:background="@color/colorPrimary"
+        android:background="@color/colorLightPrimary"
 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -43,7 +43,7 @@
                 android:src="@drawable/ic_no_picture"
                 app:civ_border_width="1dp"
                 android:layout_centerHorizontal="true"
-                app:civ_border_color="@color/colorDarkPrimary"
+                app:civ_border_color="@color/colorLightPrimary"
                 bind:pictureUrlProfessional="@{User.picture}"
                 />
         </RelativeLayout>
@@ -122,6 +122,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                />
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000"
+                android:alpha="0.12"
+                android:layout_alignParentBottom="true"/>
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/professional"
+                android:textColor="@color/colorDarkPrimary"
+                android:layout_gravity="right"
+                />
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/site"
+                android:textColor="@color/colorDarkPrimary"
+                android:layout_gravity="right"
                 />
             <Button
                 android:id="@+id/Register_register"

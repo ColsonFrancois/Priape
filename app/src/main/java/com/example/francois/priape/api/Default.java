@@ -1,5 +1,9 @@
 package com.example.francois.priape.api;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 /**
  * Created by Francois on 13/03/2016.
  */
@@ -14,8 +18,27 @@ public abstract class Default {
     public  static  String SECRET_KEY = "0E72338A-D313-ED73-FF03-E7DD53D51D00";
     public  static  String VERSION = "v1";
     public  static String SERVER_URL = "https://api.backendless.com/"+ VERSION + "/";
+   public static Context mcontext;
 
     // COde for ActivityForResult
     public static final int SELECT_PICTURE = 1;
+
+ public static boolean haveNetworkConnection(Context context) {
+  boolean haveConnectedWifi = false;
+  boolean haveConnectedMobile = false;
+
+  ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+  NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+  for (NetworkInfo ni : netInfo) {
+   if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+    if (ni.isConnected())
+     haveConnectedWifi = true;
+   if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+    if (ni.isConnected())
+     haveConnectedMobile = true;
+  }
+  return haveConnectedWifi || haveConnectedMobile;
+ }
+
 
 }

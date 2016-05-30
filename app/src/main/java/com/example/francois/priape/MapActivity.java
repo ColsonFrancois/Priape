@@ -9,19 +9,21 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.francois.priape.Model.User;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -87,7 +89,8 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 float add = (float)progress* (float)0.04;
-                zoom = 12 - add;
+                /*zoom = 12 - add;*/
+                Log.i("astre", Double.toString(zoom));
                 km.setText(Integer.toString(progress));
                 GetProfessionals(Integer.toString(progress));
             }
@@ -119,6 +122,10 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
             locationManager.requestLocationUpdates(provider, 2000, 1, this);
             if(location!=null)
             {
+                Circle circle = googleMap.addCircle(new CircleOptions().center(new LatLng(location.getLatitude(), location.getLongitude())).radius((Double.parseDouble(Kilometre)+5)*1000));
+                circle.setVisible(false);
+                zoom = getZoomLevel(circle);
+
                 onLocationChanged(location);
 
                 API.GetUsers(location.getLatitude(), location.getLongitude(),job,Kilometre, work, new Callback.GetListCallback<User>() {
@@ -220,4 +227,17 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
         /*intent.putExtra("professional", users.get(position));*/
         return false;
     }
+
+    public int getZoomLevel(Circle circle)
+    {
+        int zoomLevel = 0;
+        if(circle != null)
+        {
+            double radius = circle.getRadius();
+            double scale = radius/500;
+            zoomLevel = (int) (16- Math.log(scale)/Math.log(2));
+        }
+        return zoomLevel;
+    }
+
 }

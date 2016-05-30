@@ -30,6 +30,9 @@ public interface APIService {
     @GET("data/users")
     Call<BackendlessCollection<User>>GetUsers(@Query("offset") int offset, @Query("where") String where);
 
+    @GET("data/users")
+    Call<BackendlessCollection<User>>GetUser(@Query("offset") int offset, @Query("where") String where);
+
     @POST("users/register")
     Call<Void> register(@Body RegisterBody registerBody);
 

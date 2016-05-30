@@ -14,13 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import com.example.francois.priape.Model.Adress;
+import com.example.francois.priape.Model.Comment;
 import com.example.francois.priape.Model.User;
+import com.example.francois.priape.api.API;
+import com.example.francois.priape.api.Callback;
 import com.example.francois.priape.databinding.ActivityProfessionalSelectedBinding;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,6 +33,8 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
     private User user = new User();
     private Geocoder geocoder;
     private List<Address> addresses;
+    private List<Comment> comments;
+
 
 
     @Override
@@ -49,8 +55,6 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
             binding.setUser(user);
 
             geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-
             try {
 
                 addresses = geocoder.getFromLocation(user.getLocation().getLatitude(), user.getLocation().getLongitude(), 1);// Here 1 represent max location result to returned, by documents it recommended 1 to 5
@@ -59,7 +63,6 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
                 Log.d("test",addresses.toString());
                 if(addresses != null)
                 {
-
                     Adress adress = new Adress(addresses.get(0).getAddressLine(0), addresses.get(0).getLocality(), addresses.get(0).getCountryName());
                     binding.setAdress(adress);
                 }
@@ -69,6 +72,31 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Log.d("test", e.getMessage());
             }
+            API.getComments(user.getObjectId(), new Callback.GetListCallback<Comment>() {
+                @Override
+                public void success(List<Comment> results) {
+                    comments = new ArrayList<Comment>(results);
+                    if(results.size() <= 0){
+                        binding.professionalSelectedAvg.setText("X");
+                        binding.professionalSelectedNoone.setVisibility(View.VISIBLE);
+                    }else {
+                        double avg = 0;
+                        for (Comment comment : results) {
+                            avg = avg + comment.getNote();
+                        }
+                        avg = round(avg / results.size(), 1);
+                        binding.professionalSelectedAvg.setText(String.valueOf(avg));
+                        binding.gauge3.setValue((int) (avg * 10));
+                    }
+                }
+
+                @Override
+                public void error(String errorCode) {
+
+                }
+            });
+
+
         }
 
     }
@@ -105,14 +133,24 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
         }
         else if(id == R.id.menu_professional_selected_comment)
         {
-            Toast.makeText(getApplicationContext(), "in", Toast.LENGTH_LONG).show();
+
             Intent intent = new Intent(getApplicationContext(), CommentsActivity.class);
             intent.putExtra("professional", user);
+            ArrayList<Comment> test = new ArrayList<>(comments);
+             intent.putParcelableArrayListExtra("comments", test);
             startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
 
+    }
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
 }

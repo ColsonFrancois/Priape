@@ -70,6 +70,11 @@ public class SearchActivity extends AppCompatActivity {
                     public void error(String errorCode) {
                         Toast.makeText(getApplicationContext(), errorCode, Toast.LENGTH_LONG).show();
                         progress.dismiss();
+                        new MaterialDialog.Builder(SearchActivity.this)
+                                .content(getString(R.string.error_others))
+                                .positiveText(android.R.string.ok)
+                                .show();
+
                     }
                 });
             }
@@ -108,7 +113,11 @@ public class SearchActivity extends AppCompatActivity {
 
                    @Override
                    public void error(String errorCode) {
-
+                       progress.dismiss();
+                       new MaterialDialog.Builder(SearchActivity.this)
+                               .content(getString(R.string.error_others))
+                               .positiveText(android.R.string.ok)
+                               .show();
                    }
                });
                return false;
@@ -140,7 +149,7 @@ public class SearchActivity extends AppCompatActivity {
                 @Override
                 public void error(String errorCode) {
                     new MaterialDialog.Builder(SearchActivity.this)
-                            .content(errorCode)
+                            .content(getString(R.string.error_others))
                             .positiveText(android.R.string.ok)
                             .show();
                 }

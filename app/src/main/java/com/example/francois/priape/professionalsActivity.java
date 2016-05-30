@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.example.francois.priape.Adapter.ProfessionalsAdapter;
 import com.example.francois.priape.Model.User;
+import com.example.francois.priape.R;
 import com.example.francois.priape.databinding.ActivityProfessionalsBinding;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class professionalsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_professionals);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_professionals);
 
         //Initialise toolbar element
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);

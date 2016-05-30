@@ -13,6 +13,7 @@ public class SessionManager {
     private final static int PRIVATE_MODE = 0;
     private final static String IS_LOGGED = "isLogged";
     private final static String TOKEN = "token";
+    private final  static  String OBJECTID = "objectid";
 
     private Context context;
 
@@ -26,10 +27,14 @@ public class SessionManager {
     public boolean isLogged(){return prefs.getBoolean(IS_LOGGED, false);}
     public String getToken(){return prefs.getString(TOKEN, null);}
 
-    public void insertUser(String token)
+    public String getObjectid(){return prefs.getString(OBJECTID, null);
+    }
+
+    public void insertUser(String token, String objetId)
     {
         editor.putBoolean(IS_LOGGED, true);
         editor.putString(TOKEN, token);
+        editor.putString(OBJECTID, objetId);
         editor.commit();
     }
     public void logout(){editor.clear().commit();}

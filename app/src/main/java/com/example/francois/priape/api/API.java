@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -90,6 +92,9 @@ public class API {
         apiService = retrofit.create(APIService.class);
     }
     public static User getCurrentUser(){return currentUser;}
+    public static void setCurrentUser(User user){
+        currentUser = user;
+    }
     public static void login(String username, String password, final Callback.LoginCallback callback) {
         Call<User> loginCall = apiService.login(new LoginCredentials(username, password));
         loginCall.enqueue(new retrofit2.Callback<User>() {
@@ -104,11 +109,12 @@ public class API {
                         /*currentUser.setUserToken(userLogin.getToken());*/
                         Singleton.getInstance().setUser(currentUser);
                         token = userLogin.getToken();
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }
 
-                    callback.success();
+                    callback.success(currentUser);
 
                 }
                 else{
@@ -124,6 +130,39 @@ public class API {
             }
         });
     }
+
+    public static void getUser(final String TOKEN, String objectId, final Callback.LoginCallback callback)
+    {
+        String whereClause = "objectId='"+objectId+"'";
+        Call<BackendlessCollection<User>> call = apiService.GetUser(0, whereClause);
+        call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>() {
+            @Override
+            public void onResponse(Call<BackendlessCollection<User>> call, retrofit2.Response<BackendlessCollection<User>> response) {
+                if(response.isSuccessful())
+                {
+                    try {
+                        List<User> list = new ArrayList<User>(response.body().getData());
+                        callback.success(list.get(0));
+                        currentUser = list.get(0);
+                        /*currentUser.setUserToken(userLogin.getToken());*/
+                        Singleton.getInstance().setUser(currentUser);
+                        token = TOKEN;
+
+                    }catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
     public static void newComment(Comment comment, final Callback.NewCommentCallback callback)
     {
         Call<Comment> call = apiService.newComment(comment);
@@ -131,7 +170,7 @@ public class API {
 
             @Override
             public void onResponse(Call<Comment> call, retrofit2.Response<Comment> response) {
-
+                callback.success();
             }
 
             @Override
