@@ -43,6 +43,11 @@
     <string name="ok">ok</string>
     <string name="professional">Professionel ?</string>
     <string name="site"><u>Rendez-vous sur notre site</u></string>
+    <string name="Emailentries">Entrez votre email</string>
+    <string name="forgetpassword">Réinitialisation de votre mot de passe</string>
+    <string name="sendemail">Un email vous a été envoyé</string>
+    <string name="getSession">Récuperation de la session&#8230;</string>
+
 
     <string name="error_3020">Impossible de trouver l\'utilisateur avec le login spécifié</string>
     <string name="error_3025">Une erreur est survenue lors de la récupération du mot de passe. </string>

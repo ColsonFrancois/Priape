@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import com.example.francois.priape.Adapter.ProfessionalsAdapter;
 import com.example.francois.priape.Model.User;
-import com.example.francois.priape.R;
 import com.example.francois.priape.databinding.ActivityProfessionalsBinding;
 
 import java.util.List;
@@ -48,6 +47,7 @@ public class professionalsActivity extends AppCompatActivity {
 
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

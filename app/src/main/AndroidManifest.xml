@@ -3,12 +3,9 @@
     package="com.example.francois.priape">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -60,7 +57,8 @@
         <activity android:name=".NewCommentActivity" />
         <activity android:name=".FragmenteditnameActivity" />
         <activity android:name=".FragmentCommentActivity" />
-        <activity android:name=".NewFragmentActivity"></activity>
+        <activity android:name=".NewFragmentActivity" />
+        <activity android:name=".ForgetFragmentActivity"></activity>
     </application>
 
 </manifest>

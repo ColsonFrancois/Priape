@@ -33,6 +33,7 @@ public class UserLogin {
                     bodyJSON.getInt("phone"),
                     bodyJSON.getString("name")
             );
+            Log.d("test", String.valueOf(this.user.getPhone()));
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -42,7 +43,7 @@ public class UserLogin {
     {
         try{
             JSONObject bodyJSON = new JSONObject(request);
-            token = bodyJSON.getString("user-token");
+            this.token = bodyJSON.getString("user-token");
         }catch (JSONException e)
         {
             e.printStackTrace();

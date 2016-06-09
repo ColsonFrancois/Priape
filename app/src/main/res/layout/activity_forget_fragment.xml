@@ -1,0 +1,38 @@
+<!-- fragment_edit_name.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_name"
+    android:layout_width="250dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+    <com.rengwuxian.materialedittext.MaterialEditText
+
+        android:id="@+id/forgetfragment_email"
+        app:met_floatingLabel="normal"
+        android:drawablePadding="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:singleLine="true"
+        android:hint="@string/Emailentries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        />
+
+
+
+    <TextView
+        android:id="@+id/forgetfragment_agree"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:inputType="textEmailAddress"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:textColor="@color/colorAccent"
+        android:layout_gravity="right"
+        />
+</LinearLayout>

@@ -50,6 +50,7 @@ public class API {
     private static SimpleDateFormat dateFormatter= new SimpleDateFormat("dd/MM/yyyy HH:mm");
     private static String token;
     private static User currentUser;
+
     public static void init() {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -91,6 +92,7 @@ public class API {
 
         apiService = retrofit.create(APIService.class);
     }
+    public static  void setToken(String newtoken){token = newtoken;}
     public static User getCurrentUser(){return currentUser;}
     public static void setCurrentUser(User user){
         currentUser = user;
@@ -105,17 +107,25 @@ public class API {
                     try{
                         String bodyJson = new Gson().toJson(response.body()).toString();
                         UserLogin userLogin = new UserLogin(bodyJson);
-                        currentUser = userLogin.getUser();
-                        /*currentUser.setUserToken(userLogin.getToken());*/
+                        setCurrentUser(userLogin.getUser());
                         Singleton.getInstance().setUser(currentUser);
                         token = userLogin.getToken();
+                        User user = new User();
+                        user = userLogin.getUser();
+                        user.setUserToken(userLogin.getToken());
+                        callback.success(user);
+                       /* currentUser = userLogin.getUser();
+                        *//*currentUser.setUserToken(userLogin.getToken());*//*
+                        Singleton.getInstance().setUser(currentUser);
+                        token = userLogin.getToken();*/
+
+                        /*callback.success(userLogin.getUser());*/
 
                     }catch (Exception e){
                         e.printStackTrace();
+                        callback.error(e.toString());
+
                     }
-
-                    callback.success(currentUser);
-
                 }
                 else{
                     BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
@@ -133,7 +143,10 @@ public class API {
 
     public static void getUser(final String TOKEN, String objectId, final Callback.LoginCallback callback)
     {
-        String whereClause = "objectId='"+objectId+"'";
+        User user = new User();
+        setCurrentUser(user);
+        token = TOKEN;
+       String whereClause = "objectId='"+objectId+"'";
         Call<BackendlessCollection<User>> call = apiService.GetUser(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>() {
             @Override
@@ -142,22 +155,30 @@ public class API {
                 {
                     try {
                         List<User> list = new ArrayList<User>(response.body().getData());
-                        callback.success(list.get(0));
-                        currentUser = list.get(0);
-                        /*currentUser.setUserToken(userLogin.getToken());*/
-                        Singleton.getInstance().setUser(currentUser);
+                        setCurrentUser(list.get(0));
+                        Singleton.getInstance().setUser(list.get(0));
                         token = TOKEN;
+                        list.get(0).setUserToken(TOKEN);
+                        callback.success(list.get(0));
+                 /*       setCurrentUser(userLogin.getUser());
+                        Singleton.getInstance().setUser(currentUser);
+                        token = userLogin.getToken();
+                        User user = new User();
+                        user = userLogin.getUser();
+                        user.setUserToken(userLogin.getToken());
+                        callback.success(user);
+                 */
 
                     }catch (Exception e)
                     {
-
+                        Log.d("test",e.toString());
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
-
+                Log.d("test", "error");
             }
         });
     }
@@ -276,7 +297,6 @@ public class API {
     public  static void GetUsers(Double lat, Double lon,String job, String km, String work, final Callback.GetListCallback<User> callback)
     {
         String whereClause = "distance( "+lat+", "+lon+", location.latitude, location.longitude ) < km("+km+")"+" AND job='"+job+"' AND professional=true AND works.name='"+work+"'";
-        String sortClause = "distance( 50.484512, 4.254985, location.latitude, location.longitude )";
         Call<BackendlessCollection<User>> call = apiService.GetUsers(0, whereClause);
         call.enqueue(new retrofit2.Callback<BackendlessCollection<User>>(){
 

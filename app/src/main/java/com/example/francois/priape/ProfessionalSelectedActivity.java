@@ -72,33 +72,17 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
                 e.printStackTrace();
                 Log.d("test", e.getMessage());
             }
-            API.getComments(user.getObjectId(), new Callback.GetListCallback<Comment>() {
-                @Override
-                public void success(List<Comment> results) {
-                    comments = new ArrayList<Comment>(results);
-                    if(results.size() <= 0){
-                        binding.professionalSelectedAvg.setText("X");
-                        binding.professionalSelectedNoone.setVisibility(View.VISIBLE);
-                    }else {
-                        double avg = 0;
-                        for (Comment comment : results) {
-                            avg = avg + comment.getNote();
-                        }
-                        avg = round(avg / results.size(), 1);
-                        binding.professionalSelectedAvg.setText(String.valueOf(avg));
-                        binding.gauge3.setValue((int) (avg * 10));
-                    }
-                }
 
-                @Override
-                public void error(String errorCode) {
-
-                }
-            });
-
+            getComment();
 
         }
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getComment();
     }
 
     @Override
@@ -151,6 +135,33 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
+    }
+
+    public void getComment()
+    {
+        API.getComments(user.getObjectId(), new Callback.GetListCallback<Comment>() {
+            @Override
+            public void success(List<Comment> results) {
+                comments = new ArrayList<Comment>(results);
+                if(results.size() <= 0){
+                    binding.professionalSelectedAvg.setText("X");
+                    binding.professionalSelectedNoone.setVisibility(View.VISIBLE);
+                }else {
+                    double avg = 0;
+                    for (Comment comment : results) {
+                        avg = avg + comment.getNote();
+                    }
+                    avg = round(avg / results.size(), 1);
+                    binding.professionalSelectedAvg.setText(String.valueOf(avg));
+                    binding.gauge3.setValue((int) (avg * 10));
+                }
+            }
+
+            @Override
+            public void error(String errorCode) {
+
+            }
+        });
     }
 
 }

@@ -19,6 +19,7 @@ import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
+import com.example.francois.priape.session.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.List;
 public class SearchActivity extends AppCompatActivity {
    private Spinner spinnerWorks;
     private SearchView mSearchView;
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,13 +36,12 @@ public class SearchActivity extends AppCompatActivity {
         final Button searchButton = (Button)findViewById(R.id.search_search);
         final Spinner spinnerJobs = (Spinner)findViewById(R.id.search_jobs);
 
-        API.updateUser();
-
-
         //Initialise toolbar element
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(getString(R.string.search));
+        sessionManager = new SessionManager(this);
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +143,7 @@ public class SearchActivity extends AppCompatActivity {
             API.Logout(new Callback.LougoutCallback() {
                 @Override
                 public void success() {
+                    sessionManager.logout();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
