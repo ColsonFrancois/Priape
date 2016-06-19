@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.francois.priape.activity_search">
 
-    <item android:id="@+id/menu_search_profil" android:title="@string/profil"
-        android:orderInCategory="100" />
+
     <item android:id="@+id/action_logout" android:title="@string/logout"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_delete" android:title="@string/deleteUser"
         android:orderInCategory="100" app:showAsAction="never" />
     <item
         android:id="@+id/menu_search_search"

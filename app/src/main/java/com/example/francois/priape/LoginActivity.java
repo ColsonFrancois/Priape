@@ -92,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                         API.login(binding.email.getText().toString(), binding.password.getText().toString(), new Callback.LoginCallback() {
                             @Override
                             public void success(User user) {
-                                Log.d("test", user.getUserToken().toString());
                                 sessionManager.insertUser(user.getUserToken().toString(), user.getObjectId().toString());
                                 progress.dismiss();
                                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
@@ -112,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                                     errorMessage = getString(R.string.error_others);
                                     Error(errorMessage);
                                 }*/
-                                errorMessage = errorCode.toString();
+                                errorMessage = "Votre identifiant ou mot de passe est incorrect";
                                 Error(errorMessage);
 
                             }

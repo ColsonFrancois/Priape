@@ -12,6 +12,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -57,5 +58,9 @@ public interface APIService {
 
     @GET("data/Comment")
     Call<BackendlessCollection<Comment>> getComments(@Query("offset") int offset, @Query("where") String where);
+
+    @DELETE("data/Users/{id}")
+    Call<Void>deleteUser(@Path("id") String objectId);
+
 
 }

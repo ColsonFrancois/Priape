@@ -2,6 +2,7 @@ package com.example.francois.priape;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -14,12 +15,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.francois.priape.Model.User;
 import com.example.francois.priape.Model.Work;
 import com.example.francois.priape.api.API;
 import com.example.francois.priape.api.Callback;
 import com.example.francois.priape.session.SessionManager;
+import com.example.francois.priape.session.Singleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,11 +162,30 @@ public class SearchActivity extends AppCompatActivity {
             });
             return true;
         }
-        if(id == R.id.menu_search_profil)
+        if(id == R.id.action_delete)
         {
-            Intent intent = new Intent(getApplicationContext(), ProfilActivity.class);
-            startActivity(intent);
-            return  true;
+            /*API.deleteUser(Singleton.getInstance().getUser().getObjectId(), new Callback.deleteUser() {
+                @Override
+                public void success() {
+                    Toast.makeText(getApplicationContext(), "ok", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void error(String errorCode) {
+                    Toast.makeText(getApplicationContext(), "erreur", Toast.LENGTH_LONG).show();
+                }
+            });*/
+            new MaterialDialog.Builder(this)
+                    .title(R.string.deleteSur)
+                    .positiveText(android.R.string.ok).onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    deleteUser();
+
+                }
+            })
+                    .negativeText(android.R.string.cancel)
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -181,4 +203,27 @@ public class SearchActivity extends AppCompatActivity {
         spinnerWorks.setAdapter(dataAdapter);
     }
 
+    public void deleteUser()
+    {
+        final MaterialDialog progress = new MaterialDialog.Builder(SearchActivity.this)
+                .content(R.string.deleting)
+                .progress(true, 0)
+                .show();
+                sessionManager.logout();
+                API.deleteUser(Singleton.getInstance().getUser().getObjectId(), new Callback.deleteUser() {
+                    @Override
+                    public void success() {
+                        sessionManager.logout();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        progress.dismiss();
+                    }
+
+                    @Override
+                    public void error(String errorCode) {
+
+                    }
+                });
+            }
 }

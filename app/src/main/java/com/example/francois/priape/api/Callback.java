@@ -43,4 +43,8 @@ public interface GetListCallback<T>{
         void success();
         void error(String errorCode);
     }
+    public interface deleteUser{
+        void success();
+        void error(String errorCode);
+    }
 }

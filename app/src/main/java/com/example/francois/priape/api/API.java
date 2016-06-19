@@ -62,17 +62,32 @@ public class API {
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-                        Request.Builder request = chain.request().newBuilder()
-                                .addHeader("application-id", Default.APPLICATION_ID)
-                                .addHeader("secret-key", Default.SECRET_KEY)
-                                .addHeader("Content-Type", "application/json")
-                                .addHeader("application-type", "REST");
-                        if (getCurrentUser() != null) {
-                            Log.i("LogRequest", token);
-                            request.addHeader("user-token", token);
+                        if(chain.request().method().equals("DELETE"))
+                        {
+                            Request.Builder request = chain.request().newBuilder()
+                                    .addHeader("application-id", Default.APPLICATION_ID)
+                                    .addHeader("secret-key", Default.SECRET_KEY)
+                                    .addHeader("application-type", "REST");
+                            if (getCurrentUser() != null) {
+                                Log.i("LogRequest", token);
+                                request.addHeader("user-token", token);
+                            }
+                            Log.i("LogRequest", getCurrentUser() + "");
+                            return chain.proceed(request.build());
+                        }else{
+                            Request.Builder request = chain.request().newBuilder()
+                                    .addHeader("application-id", Default.APPLICATION_ID)
+                                    .addHeader("secret-key", Default.SECRET_KEY)
+                                    .addHeader("Content-Type", "application/json")
+                                    .addHeader("application-type", "REST");
+                            if (getCurrentUser() != null) {
+                                Log.i("LogRequest", token);
+                                request.addHeader("user-token", token);
+                            }
+                            Log.i("LogRequest", getCurrentUser() + "");
+                            return chain.proceed(request.build());
                         }
-                        Log.i("LogRequest", getCurrentUser() + "");
-                        return chain.proceed(request.build());
+
                     }
                 }).build();
 
@@ -110,9 +125,10 @@ public class API {
                         setCurrentUser(userLogin.getUser());
                         Singleton.getInstance().setUser(currentUser);
                         token = userLogin.getToken();
-                        User user = new User();
-                        user = userLogin.getUser();
-                        user.setUserToken(userLogin.getToken());
+
+                     /*   public User(String __meta, String objectId, String ownerId, String email,String name)*/
+                        User user = new User(userLogin.getUser().get__meta(), userLogin.getUser().getObjectId(), userLogin.getUser().getOwnerId(), userLogin.getUser().getEmail(), userLogin.getUser().getName());
+                        user.setUserToken(token);
                         callback.success(user);
                        /* currentUser = userLogin.getUser();
                         *//*currentUser.setUserToken(userLogin.getToken());*//*
@@ -294,6 +310,30 @@ public class API {
         });
     }
 
+    public static void deleteUser(String objectId, final Callback.deleteUser callback)
+    {
+
+        Call<Void> call = apiService.deleteUser(objectId);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    callback.success();
+                }else
+                {
+                    BackendlessError backendlessError = BackendlessError.extractFromResponseBody(response.errorBody());
+                    callback.error(backendlessError.getCode()+ "");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                callback.error("erreur");
+            }
+        });
+    }
+
     public  static void GetUsers(Double lat, Double lon,String job, String km, String work, final Callback.GetListCallback<User> callback)
     {
         String whereClause = "distance( "+lat+", "+lon+", location.latitude, location.longitude ) < km("+km+")"+" AND job='"+job+"' AND professional=true AND works.name='"+work+"'";
@@ -311,6 +351,7 @@ public class API {
             }
             @Override
             public void onFailure(Call<BackendlessCollection<User>> call, Throwable t) {
+                callback.error("error");
             }
 
         });

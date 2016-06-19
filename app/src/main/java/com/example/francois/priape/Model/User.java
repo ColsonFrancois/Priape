@@ -21,7 +21,7 @@ public class User implements Parcelable {
     private String email;
     private String name;
     private String job;
-    private int phone;
+    private String phone;
     private String description;
     private String picture;
     private List<Work> works;
@@ -35,13 +35,12 @@ public class User implements Parcelable {
 
     }
 
-    public User(String __meta, String objectId, String ownerId, String email, int phone, String name)
+    public User(String __meta, String objectId, String ownerId, String email,String name)
     {
         this.__meta = __meta;
         this.objectId = objectId;
         this.ownerId = ownerId;
         this.email = email;
-        this.phone = phone;
         this.name = name;
         this.___class = getClass().getSimpleName();
 
@@ -157,11 +156,11 @@ public class User implements Parcelable {
         this.works = works;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -184,7 +183,7 @@ public class User implements Parcelable {
         email = in.readString();
         name = in.readString();
         job = in.readString();
-        phone = in.readInt();
+        phone = in.readString();
         description = in.readString();
         picture = in.readString();
         if (in.readByte() == 0x01) {
@@ -213,7 +212,7 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(name);
         dest.writeString(job);
-        dest.writeInt(phone);
+        dest.writeString(phone);
         dest.writeString(description);
         dest.writeString(picture);
         if (works == null) {

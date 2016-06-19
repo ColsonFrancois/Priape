@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.francois.priape.Model.Adress;
 import com.example.francois.priape.Model.Comment;
@@ -100,7 +99,7 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
             finish();
             return true;
         }  else if (id == R.id.menu_professional_selected_phone) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Integer.toString(user.getPhone())));
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + user.getPhone()));
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -143,10 +142,6 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
             @Override
             public void success(List<Comment> results) {
                 comments = new ArrayList<Comment>(results);
-                if(results.size() <= 0){
-                    binding.professionalSelectedAvg.setText("X");
-                    binding.professionalSelectedNoone.setVisibility(View.VISIBLE);
-                }else {
                     double avg = 0;
                     for (Comment comment : results) {
                         avg = avg + comment.getNote();
@@ -154,7 +149,7 @@ public class ProfessionalSelectedActivity extends AppCompatActivity {
                     avg = round(avg / results.size(), 1);
                     binding.professionalSelectedAvg.setText(String.valueOf(avg));
                     binding.gauge3.setValue((int) (avg * 10));
-                }
+
             }
 
             @Override

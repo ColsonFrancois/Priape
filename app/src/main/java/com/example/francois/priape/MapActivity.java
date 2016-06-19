@@ -149,11 +149,37 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
             }
             else
             {
+
                 Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
             }
         }
         else{
-            Toast.makeText(getBaseContext(), R.string.NotFoundLocalisation, Toast.LENGTH_SHORT).show();
+            Location location1 = new Location("test");
+            location1.setLatitude(50.484464);
+            location1.setLongitude(4.255006);
+            Circle circle = googleMap.addCircle(new CircleOptions().center(new LatLng(location1.getLatitude(), location1.getLongitude())).radius((Double.parseDouble(Kilometre)+5)*1000));
+            circle.setVisible(false);
+            zoom = getZoomLevel(circle);
+            onLocationChanged(location1);
+            API.GetUsers(location1.getLatitude(), location1.getLongitude(),job,Kilometre, work, new Callback.GetListCallback<User>() {
+                @Override
+                public void success(List<User> results) {
+                    users = new ArrayList<User>(results);
+                    if(users.size() > 0)
+                        addMarker(results);
+                    else
+                        Toast.makeText(getApplicationContext(), R.string.notfound, Toast.LENGTH_LONG).show();
+
+
+                }
+
+                @Override
+                public void error(String errorCode) {
+
+                    Toast.makeText(getApplicationContext(), errorCode, Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
     }
 
@@ -191,7 +217,7 @@ public class MapActivity extends AppCompatActivity implements LocationListener, 
 
     @Override
     public void onLocationChanged(Location location) {
-       /* Log.i("LatLng", Double.toString(location.getLatitude())+ Double.toString(location.getLongitude()));*/
+       /* Log.i("LatLng", latitude+longitude);*/
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }

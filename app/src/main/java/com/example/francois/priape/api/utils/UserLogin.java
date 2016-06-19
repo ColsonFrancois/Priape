@@ -30,10 +30,8 @@ public class UserLogin {
                     bodyJSON.getString("objectId"),
                     bodyJSON.getString("ownerId"),
                     bodyJSON.getString("email"),
-                    bodyJSON.getInt("phone"),
                     bodyJSON.getString("name")
             );
-            Log.d("test", String.valueOf(this.user.getPhone()));
 
         }catch (JSONException e){
             e.printStackTrace();

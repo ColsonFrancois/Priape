@@ -47,6 +47,9 @@
     <string name="forgetpassword">Réinitialisation de votre mot de passe</string>
     <string name="sendemail">Un email vous a été envoyé</string>
     <string name="getSession">Récuperation de la session&#8230;</string>
+    <string name="deleteUser">Supprimer ce compte</string>
+    <string name="deleteSur">Êtes-vous sur de vouloir supprimer votre compte ?</string>
+    <string name="deleting">Suppression&#8230;</string>
 
 
     <string name="error_3020">Impossible de trouver l\'utilisateur avec le login spécifié</string>

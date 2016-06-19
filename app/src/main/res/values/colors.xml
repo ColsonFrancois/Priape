@@ -14,4 +14,5 @@
     <color name="DarkBlue">#000080</color>
     <color name="LightSkyBlue">#b2b2d8</color>
     <color name="red">#FF0000</color>
+    <color name="backgroundColorPress">#455A64</color>
 </resources>
